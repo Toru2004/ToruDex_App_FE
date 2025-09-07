@@ -670,8 +670,16 @@ class APIs {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      return jsonData.map((item) => PostModel.fromJson(item)).toList();
+      final decoded = jsonDecode(response.body);
+
+      if (decoded is Map<String, dynamic> && decoded['results'] is List) {
+        return (decoded['results'] as List)
+            .map((item) => PostModel.fromJson(item))
+            .toList();
+      }
+
+      print("⚠️ Unexpected response format: $decoded");
+      return [];
     } else {
       print("❌ Lỗi khi search: ${response.body}");
       return [];
