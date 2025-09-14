@@ -650,6 +650,7 @@ class APIs {
     }
   }
 
+  /// Create post
   static Future<void> createPostInElasticsearch(Map<String, dynamic> post) async {
     final url = Uri.parse('${Config.apiUrl}/posts');
     final response = await http.post(
@@ -685,6 +686,36 @@ class APIs {
       return [];
     }
   }
+
+  /// Update post
+  static Future<void> updatePostInElasticsearch(
+      String postId, Map<String, dynamic> updateData) async {
+    final url = Uri.parse('${Config.apiUrl}/posts/$postId');
+    final response = await http.put(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(updateData),
+    );
+
+    if (response.statusCode == 200) {
+      print("✅ Cập nhật post thành công");
+    } else {
+      print("❌ Lỗi khi update: ${response.body}");
+    }
+  }
+
+  /// Delete post
+  static Future<void> deletePostInElasticsearch(String postId) async {
+    final url = Uri.parse('${Config.apiUrl}/posts/$postId');
+    final response = await http.delete(url);
+
+    if (response.statusCode == 200) {
+      print("✅ Xóa post thành công");
+    } else {
+      print("❌ Lỗi khi xóa: ${response.body}");
+    }
+  }
+
 
   // Lấy thông tin người
   Future<Map<String, dynamic>?> getUserInfoById(String userId) async {

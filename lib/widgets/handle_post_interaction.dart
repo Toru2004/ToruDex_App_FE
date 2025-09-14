@@ -11,6 +11,8 @@ import 'package:torudex/widgets/common/text_field_modal.dart';
 import '../screen/homePage/edit_post_page.dart';
 import '../theme/theme.dart';
 
+import 'package:torudex/api/user_apis.dart';
+
 class ReusablePostActionButton extends StatelessWidget {
   final bool isDarkMode;
   final String? postId;
@@ -81,6 +83,7 @@ class ReusablePostActionButton extends StatelessWidget {
               isDarkMode: isDarkMode,
             );
             if (confirm == true) {
+              APIs.deletePostInElasticsearch(post.postId);
               await FirebaseFirestore.instance
                   .collection('posts')
                   .doc(post.postId)
